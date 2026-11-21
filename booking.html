@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Serena Hotel Kampala | Reservations</title>
+    <link rel="stylesheet" href="booking.css">
+</head>
+<body>
+
+    <header class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo-link">
+                <img src="serena-logo.png" alt="Serena Hotel Kampala Logo" class="logo">
+            </a>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="rooms.html">Rooms</a></li>
+                    <li><a href="compare.html">Compare</a></li>
+                    <li><a href="booking.html" class="active-link">Booking</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="page-banner">
+        <div class="banner-content">
+            <h1>Complete Your Reservation</h1>
+            <p>Kintu Road, Nakasero, Kampala &bull; Direct Reservations Desk</p>
+        </div>
+    </section>
+
+    <main class="section-container">
+        <div class="booking-layout">
+            <form id="reservation-form" class="booking-form">
+                <h3>Guest &amp; Stay Details</h3>
+
+                <div class="form-group">
+                    <label for="room-select">Selected Room Category</label>
+                    <select id="room-select" name="room" required>
+                        <option value="Standard" data-rate="350000" data-bed="Queen" data-size="32 m²" data-amenities="Wi-Fi Included">Standard — UGX 350,000 / night</option>
+                        <option value="Deluxe" data-rate="550000" data-bed="King" data-size="45 m²" data-amenities="Wi-Fi &amp; Breakfast Included">Deluxe — UGX 550,000 / night</option>
+                        <option value="Suite" data-rate="900000" data-bed="King + Sofa Bed" data-size="75 m²" data-amenities="Wi-Fi, Breakfast &amp; Pool Access">Suite — UGX 900,000 / night</option>
+                        <option value="Presidential" data-rate="2500000" data-bed="Super King" data-size="180 m²" data-amenities="All-Inclusive VIP &amp; Butler Service">Presidential — UGX 2,500,000 / night</option>
+                    </select>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="checkin">Check-In Date</label>
+                        <input type="date" id="checkin" name="checkin" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="nights">Number of Nights</label>
+                        <input type="number" id="nights" name="nights" min="1" max="30" value="1" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="guest-name">Full Name</label>
+                    <input type="text" id="guest-name" name="guestName" placeholder="e.g. David Mukasa" required>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="guest-email">Email Address</label>
+                        <input type="email" id="guest-email" name="guestEmail" placeholder="guest@example.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="guest-phone">Phone Number</label>
+                        <input type="tel" id="guest-phone" name="guestPhone" placeholder="+256 700 000 000" required>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-primary full-width">Confirm Reservation</button>
+            </form>
+
+            <aside class="booking-summary">
+                <h3>Reservation Summary</h3>
+                <div class="summary-row">
+                    <span>Room Type:</span>
+                    <strong id="summary-room">Standard</strong>
+                </div>
+                <div class="summary-row">
+                    <span>Bed &amp; Size:</span>
+                    <span id="summary-specs">Queen &bull; 32 m²</span>
+                </div>
+                <div class="summary-row">
+                    <span>Package Perks:</span>
+                    <span id="summary-amenities">Wi-Fi Included</span>
+                </div>
+                <div class="summary-row">
+                    <span>Nightly Rate:</span>
+                    <span id="summary-rate">UGX 350,000</span>
+                </div>
+                <div class="summary-row">
+                    <span>Duration:</span>
+                    <span id="summary-nights">1 Night</span>
+                </div>
+                <div class="summary-total">
+                    <span>Estimated Total:</span>
+                    <strong id="summary-total">UGX 350,000</strong>
+                </div>
+
+                <div id="confirmation-box" class="confirmation-box hidden"></div>
+            </aside>
+        </div>
+
+        <div class="section-cta">
+            <a href="index.html" class="btn-secondary">&larr; Back to Portal Home</a>
+        </div>
+    </main>
+
+    <script>
+        const roomSelect = document.getElementById('room-select');
+        const nightsInput = document.getElementById('nights');
+        const checkinInput = document.getElementById('checkin');
+        const form = document.getElementById('reservation-form');
+        const confirmationBox = document.getElementById('confirmation-box');
+
+        const summaryRoom = document.getElementById('summary-room');
+        const summarySpecs = document.getElementById('summary-specs');
+        const summaryAmenities = document.getElementById('summary-amenities');
+        const summaryRate = document.getElementById('summary-rate');
+        const summaryNights = document.getElementById('summary-nights');
+        const summaryTotal = document.getElementById('summary-total');
+
+        const today = new Date().toISOString().split('T')[0];
+        checkinInput.value = today;
+        checkinInput.min = today;
+
+        const params = new URLSearchParams(window.location.search);
+        const preselectedRoom = params.get('room');
+        if (preselectedRoom) {
+            for (const option of roomSelect.options) {
+                if (option.value.toLowerCase() === preselectedRoom.toLowerCase()) {
+                    roomSelect.value = option.value;
+                    break;
+                }
+            }
+        }
+
+        function formatUGX(amount) {
+            return 'UGX ' + Number(amount).toLocaleString('en-US');
+        }
+
+        function updateSummary() {
+            const selected = roomSelect.options[roomSelect.selectedIndex];
+            const rate = parseInt(selected.dataset.rate, 10);
+            const nights = Math.max(1, parseInt(nightsInput.value, 10) || 1);
+            const total = rate * nights;
+
+            summaryRoom.textContent = selected.value;
+            summarySpecs.textContent = selected.dataset.bed + ' \u2022 ' + selected.dataset.size;
+            summaryAmenities.textContent = selected.dataset.amenities;
+            summaryRate.textContent = formatUGX(rate);
+            summaryNights.textContent = nights + (nights === 1 ? ' Night' : ' Nights');
+            summaryTotal.textContent = formatUGX(total);
+        }
+
+        roomSelect.addEventListener('change', updateSummary);
+        nightsInput.addEventListener('input', updateSummary);
+
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+            const guestName = document.getElementById('guest-name').value.trim();
+            const selected = roomSelect.options[roomSelect.selectedIndex];
+            const nights = Math.max(1, parseInt(nightsInput.value, 10) || 1);
+            const total = parseInt(selected.dataset.rate, 10) * nights;
+
+            confirmationBox.classList.remove('hidden');
+            confirmationBox.innerHTML =
+                '<strong>Reservation Confirmed</strong><br>' +
+                'Thank you, ' + guestName + '. Your <strong>' + selected.value + '</strong> stay starting <strong>' +
+                checkinInput.value + '</strong> (' + nights + (nights === 1 ? ' night' : ' nights') +
+                ') is reserved for <strong>' + formatUGX(total) + '</strong>.';
+        });
+
+        updateSummary();
+    </script>
+
+</body>
+</html>

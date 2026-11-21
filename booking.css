@@ -35,7 +35,7 @@ body {
 }
 
 .logo {
-    height: 90px;
+    height: 50px;
     width: auto;
     display: block;
 }
@@ -52,17 +52,21 @@ body {
     font-weight: 600;
     font-size: 1rem;
     letter-spacing: 0.5px;
-    transition: color 0.25s ease;
+    padding-bottom: 4px;
+    border-bottom: 2px solid transparent;
+    transition: color 0.25s ease, border-color 0.25s ease;
 }
 
-.nav-links a:hover {
-    color: #c7a23e;
+.nav-links a:hover,
+.nav-links a.active-link {
+    color: #C9A84C;
+    border-bottom-color: #C9A84C;
 }
 
 /* Hero Section */
 .hero {
     width: 100%;
-    min-height: 100px;
+    min-height: 500px;
     background-image: url('hero-serena.jpg');
     background-size: cover;
     background-position: center;
@@ -95,6 +99,27 @@ body {
     text-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
 }
 
+/* Subpage Banner */
+.page-banner {
+    background-color: #800020;
+    color: #FFFFF0;
+    border-bottom: 4px solid #C9A84C;
+    padding: 48px 24px;
+    text-align: center;
+}
+
+.banner-content h1 {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 2.3rem;
+    margin-bottom: 8px;
+}
+
+.banner-content p {
+    color: #F5E8C7;
+    font-size: 1.05rem;
+}
+
+/* Buttons */
 .btn-primary {
     display: inline-block;
     background-color: #800020;
@@ -106,12 +131,41 @@ body {
     text-decoration: none;
     border-radius: 4px;
     letter-spacing: 0.5px;
+    cursor: pointer;
     transition: background-color 0.25s ease, color 0.25s ease;
 }
 
 .btn-primary:hover {
     background-color: #C9A84C;
     color: #800020;
+}
+
+.btn-secondary {
+    display: inline-block;
+    background-color: transparent;
+    color: #800020;
+    border: 2px solid #800020;
+    padding: 10px 22px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+.btn-secondary:hover {
+    background-color: #800020;
+    color: #FFFFF0;
+}
+
+.btn-small {
+    padding: 10px 20px;
+    font-size: 0.95rem;
+}
+
+.full-width {
+    width: 100%;
+    text-align: center;
 }
 
 /* Shared Section Layout */
@@ -139,6 +193,11 @@ body {
     margin: 12px auto 0;
 }
 
+.section-cta {
+    margin-top: 32px;
+    text-align: center;
+}
+
 /* Room Showcase (Flexbox: 2 per row) */
 .rooms-grid {
     display: flex;
@@ -158,6 +217,10 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+}
+
+.detail-card:target {
+    box-shadow: 0 0 0 3px #C9A84C, 0 6px 16px rgba(128, 0, 32, 0.15);
 }
 
 .card-header {
@@ -185,6 +248,27 @@ body {
 .room-desc {
     color: #444444;
     font-size: 0.98rem;
+    margin-bottom: 20px;
+}
+
+.room-specs {
+    list-style: none;
+    margin-bottom: 20px;
+    padding-top: 12px;
+    border-top: 1px dashed #E2D9C2;
+    font-size: 0.95rem;
+    color: #333333;
+}
+
+.room-specs li {
+    margin-bottom: 6px;
+}
+
+.card-actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: auto;
 }
 
 /* Comparison Table */
@@ -253,11 +337,126 @@ body {
 .booking-notice {
     color: #555555;
     font-size: 1.05rem;
+    max-width: 650px;
+    margin: 0 auto;
+}
+
+/* Booking Page Form & Summary */
+.booking-layout {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 32px;
+    align-items: flex-start;
+}
+
+.booking-form {
+    flex: 1 1 58%;
+    background-color: #FFFFFF;
+    border: 1px solid #C9A84C;
+    border-top: 5px solid #800020;
+    border-radius: 6px;
+    padding: 32px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.booking-summary {
+    flex: 1 1 36%;
+    background-color: #FFFFFF;
+    border: 1px solid #C9A84C;
+    border-top: 5px solid #C9A84C;
+    border-radius: 6px;
+    padding: 32px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.booking-form h3,
+.booking-summary h3 {
+    font-family: Georgia, 'Times New Roman', serif;
+    color: #800020;
+    font-size: 1.4rem;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #EFECE0;
+}
+
+.form-row {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.form-row .form-group {
+    flex: 1 1 calc(50% - 8px);
+}
+
+.form-group {
+    margin-bottom: 18px;
+}
+
+.form-group label {
+    display: block;
+    font-weight: 600;
+    color: #800020;
+    margin-bottom: 6px;
+    font-size: 0.95rem;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #C9A84C;
+    border-radius: 4px;
+    background-color: #FFFFF0;
+    font-size: 1rem;
+    color: #2B2B2B;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: #800020;
+}
+
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid #EFECE0;
+    font-size: 0.98rem;
+    gap: 12px;
+}
+
+.summary-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 16px;
+    margin-top: 8px;
+    font-size: 1.15rem;
+    color: #800020;
+}
+
+.confirmation-box {
+    margin-top: 20px;
+    padding: 16px;
+    background-color: #FAF9F0;
+    border-left: 4px solid #1E8449;
+    color: #2B2B2B;
+    font-size: 0.95rem;
+    border-radius: 4px;
+}
+
+.hidden {
+    display: none;
 }
 
 /* Responsive Adjustments */
 @media (max-width: 768px) {
-    .room-card {
+    .room-card,
+    .booking-form,
+    .booking-summary,
+    .form-row .form-group {
         flex: 1 1 100%;
     }
 
